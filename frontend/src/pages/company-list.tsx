@@ -12,10 +12,10 @@ export default function CompanyList() {
 
   // テストデータの作成
   const companyData = [
-    { id: 1, name: '株式会社一番' },
-    { id: 2, name: '株式会社二番' },
-    { id: 3, name: '株式会社三番' },
-    { id: 4, name: '株式会社四番' },
+    { id: 1, name: '株式会社1番' },
+    { id: 2, name: '株式会社2番' },
+    { id: 3, name: '株式会社3番' },
+    { id: 4, name: '株式会社4番' },
   ]
 
   // ページ遷移を処理する関数
