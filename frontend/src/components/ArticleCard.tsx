@@ -1,24 +1,24 @@
-import { Card, CardContent, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
+import { Card, CardContent, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 
 type ArticleCardProps = {
-  title: string;
-  content: string;
-};
+  title: string
+  content: string
+}
 
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
-  text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text;
+  text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text
 
 const ArticleCard = (props: ArticleCardProps) => {
-  const router = useRouter();
+  const router = useRouter()
 
   // タイトルクリックでルーティング
   const handleClick = () => {
-    router.push('/');
-  };
+    router.push('/')
+  }
 
   return (
-    <Card sx={{ backgroundColor: 'lightblue' }}>  
+    <Card sx={{ backgroundColor: 'lightblue' }}>
       <CardContent>
         <Typography
           component="div"
@@ -32,8 +32,8 @@ const ArticleCard = (props: ArticleCardProps) => {
             cursor: 'pointer',
             color: 'inherit',
             '&:hover': {
-              textDecoration: 'underline'
-            }
+              textDecoration: 'underline',
+            },
           }}
         >
           {omit(props.title)(45)('...')}
@@ -41,7 +41,7 @@ const ArticleCard = (props: ArticleCardProps) => {
         <Typography sx={{ fontSize: 12 }}>{props.content}</Typography>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default ArticleCard;
+export default ArticleCard
