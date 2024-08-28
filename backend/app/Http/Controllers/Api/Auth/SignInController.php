@@ -6,11 +6,14 @@ use App\Exceptions\HttpJsonResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\SignIn\SendTokenRequest;
 use App\Http\Requests\Api\Auth\SignIn\VerifyRequest;
+use App\Mail\OneTimeToken as OneTimeTokenMail;
+use App\Mail\UserNotExists as UserNotExistsMail;
 use App\UseCases\User\FindByEmailAction;
 use App\Utils\OneTimeToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Random\RandomException;
 
 class SignInController extends Controller
@@ -45,11 +48,13 @@ class SignInController extends Controller
                 "expireAt" => time() + 60 * 30 // 10分間
             ]);
 
-            // @todo ワンタイムパスワードを送信
+            // @todo Queue経由にする
+            Mail::to($data["email"])->send(new OneTimeTokenMail($token));
         } else {
             // ユーザーが存在しない場合、ユーザーが存在しない旨のメールを送信。
 
-            // @todo ユーザーが存在しない旨のメールを送信
+            // @todo Queue経由にする
+            Mail::to($data["email"])->send(new UserNotExistsMail);
         }
 
         return $this->responseJson(["result" => "ok"]);

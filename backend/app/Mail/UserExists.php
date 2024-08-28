@@ -9,17 +9,14 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OneTimeToken extends Mailable
+class UserExists extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(
-        private string $token
-    )
-    {}
+    public function __construct() {}
 
     /**
      * Get the message envelope.
@@ -27,7 +24,7 @@ class OneTimeToken extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: `ワンタイムパスワードは「{$this->token}」です`
+            subject: "このメールアドレスは登録済みです"
         );
     }
 
@@ -37,10 +34,7 @@ class OneTimeToken extends Mailable
     public function content(): Content
     {
         return new Content(
-            text: "mails.one-time-token",
-            with: [
-                "token" => $this->token
-            ]
+            text: "mails.user-exists"
         );
     }
 

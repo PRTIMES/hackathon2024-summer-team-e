@@ -6,12 +6,15 @@ use App\Exceptions\HttpJsonResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\SignUp\SendTokenRequest;
 use App\Http\Requests\Api\Auth\SignUp\VerifyRequest;
+use App\Mail\OneTimeToken as OneTimeTokenMail;
+use App\Mail\UserExists as UserExistsMail;
 use App\UseCases\User\CreateAction;
 use App\UseCases\User\FindByEmailAction;
 use App\Utils\OneTimeToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Random\RandomException;
 
 class SignUpController extends Controller
@@ -35,7 +38,8 @@ class SignUpController extends Controller
         if ($user) {
             // ユーザーが存在する場合、登録済みの旨のメールを送信。
 
-            // @todo 登録済みの旨のメールを送信
+            // @todo Queue経由にする
+            Mail::to($user)->send(new UserExistsMail);
         } else {
             // ユーザーが存在しない場合、ワンタイムパスワードを生成し、メールを送信。
 
@@ -45,7 +49,8 @@ class SignUpController extends Controller
                 "expireAt" => time() + 60 * 30 // 10分間
             ]);
 
-            // @todo ワンタイムパスワードを送信
+            // @todo Queue経由にする
+            Mail::to($data["email"])->send(new OneTimeTokenMail($token));
         }
 
         return $this->responseJson(["result" => "ok"]);
