@@ -33,9 +33,11 @@ class SignUpController extends Controller
         $user = FindByEmailAction::run($data["email"]);
 
         if ($user) {
+            // ユーザーが存在する場合、登録済みの旨のメールを送信。
 
             // @todo 登録済みの旨のメールを送信
         } else {
+            // ユーザーが存在しない場合、ワンタイムパスワードを生成し、メールを送信。
 
             $request->session()->put("signup_data", [
                 "data"     => $data,

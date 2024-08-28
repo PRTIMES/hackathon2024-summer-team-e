@@ -37,6 +37,7 @@ class SignInController extends Controller
         $user = FindByEmailAction::run($data["email"]);
 
         if ($user) {
+            // ユーザーが存在する場合、ワンタイムパスワードを生成し、メールを送信。
 
             $request->session()->put("signin_data", [
                 "data"     => $data,
@@ -46,6 +47,7 @@ class SignInController extends Controller
 
             // @todo ワンタイムパスワードを送信
         } else {
+            // ユーザーが存在しない場合、ユーザーが存在しない旨のメールを送信。
 
             // @todo ユーザーが存在しない旨のメールを送信
         }
