@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases;
+namespace App\UseCases\User;
 
 use App\Models\User;
 use App\Utils\Hash;

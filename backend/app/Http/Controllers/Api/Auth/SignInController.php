@@ -6,7 +6,7 @@ use App\Exceptions\HttpJsonResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\SignIn\SendTokenRequest;
 use App\Http\Requests\Api\Auth\SignIn\VerifyRequest;
-use App\UseCases\FindByEmailAction;
+use App\UseCases\User\FindByEmailAction;
 use App\Utils\OneTimeToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
