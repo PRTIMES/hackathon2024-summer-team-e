@@ -1,48 +1,43 @@
-import { Box, Container, Typography, Button } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
+import Button from '@mui/material/Button'
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import ArticleCard from '@/components/ArticleCard'
-import Error from '@/components/Error'
 import Loading from '@/components/Loading'
+import { ky } from '@/libs/ky'
 
 type ArticleProps = {
-  id: number
   title: string
-  content: string
+  summary: string
+  company_name: string
   url: string
 }
 
 const Index: NextPage = () => {
   const [articles, setArticles] = useState<ArticleProps[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<boolean>(false)
-  const [itemsToShow, setItemsToShow] = useState<number>(30)
+  const [readMoreDisabled, setReadMoreDisabled] = useState<boolean>(false)
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/photos')
-      .then((response) => {
-        if (!response.ok) {
-          return
-        }
-        return response.json()
+    ky.get('./api/press-release/recommend')
+      .then((v) => {
+        return v.json<
+          {
+            title: string
+            summary: string
+            company_name: string
+            url: string
+          }[]
+        >()
       })
-      .then((data) => {
-        setArticles(data)
+      .then((value) => {
         setLoading(false)
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error)
-        setError(true)
-        setLoading(false)
+        setArticles(value)
       })
   }, [])
 
-  const handleLoadMore = () => {
-    setItemsToShow(itemsToShow + 30)
-  }
-
   if (loading) return <Loading />
-  if (error) return <Error />
 
   return (
     <Box sx={{ backgroundColor: 'white', minHeight: '100vh', p: 4 }}>
@@ -51,28 +46,48 @@ const Index: NextPage = () => {
         component="h1"
         sx={{ textAlign: 'center', mb: 2, color: 'text.primary' }}
       >
-        オススメ記事
+        カスタマイズされたプレスリリースを見る
       </Typography>
       <Typography
         variant="body1"
         component="p"
         sx={{ textAlign: 'center', mb: 4, color: 'text.primary' }}
       >
-        あなたが気になる記事を選ぼう
+        あなたが気になる記事を見よう
       </Typography>
       <Container maxWidth="md">
-        {articles.slice(0, itemsToShow).map((article) => (
-          <Box key={article.id} sx={{ mb: 4, bgcolor: 'white' }}>
+        {articles.map((article, id) => (
+          <Box key={id} sx={{ mb: 4, bgcolor: 'white' }}>
             <ArticleCard {...article} />
           </Box>
         ))}
-        {itemsToShow < articles.length && (
-          <Box sx={{ textAlign: 'center', mt: 4 }}>
-            <Button variant="contained" onClick={handleLoadMore}>
-              もっと見る
-            </Button>
-          </Box>
-        )}
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={readMoreDisabled}
+            onClick={() => {
+              setReadMoreDisabled(true)
+              ky.get('./api/press-release/recommend')
+                .then((v) => {
+                  return v.json<
+                    {
+                      title: string
+                      summary: string
+                      company_name: string
+                      url: string
+                    }[]
+                  >()
+                })
+                .then((v) => {
+                  setArticles((prevState) => [...prevState, ...v])
+                  setReadMoreDisabled(false)
+                })
+            }}
+          >
+            もっと見る
+          </Button>
+        </Box>
       </Container>
     </Box>
   )
