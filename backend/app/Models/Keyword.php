@@ -11,7 +11,8 @@ class Keyword extends Model
     use HasFactory;
 
     protected $fillable = [
-        "keyword"
+        "keyword",
+        "weight"
     ];
 
     /**
@@ -19,7 +20,6 @@ class Keyword extends Model
      */
     public function pressReleases(): BelongsToMany
     {
-        return $this->belongsToMany(PressRelease::class)
-                    ->withPivot("weight");
+        return $this->belongsToMany(PressRelease::class);
     }
 }

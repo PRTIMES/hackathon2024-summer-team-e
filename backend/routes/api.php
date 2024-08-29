@@ -9,8 +9,3 @@ Route::post("/signup/verify", [Auth\SignUpController::class, "register"]);
 
 Route::post("/signin",        [Auth\SignInController::class, "sendToken"]);
 Route::post("/signin/verify", [Auth\SignInController::class, "verify"]);
-
-Route::middleware("auth:sanctum")->group(function () {
-
-    Route::post("/press-release/view", PressRelease\ViewController::class);
-});

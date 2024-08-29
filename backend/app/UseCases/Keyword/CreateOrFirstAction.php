@@ -6,18 +6,15 @@ use App\Models\Keyword;
 
 class CreateOrFirstAction
 {
-    /**
-     * @param string $keyword
-     * @return Keyword
-     */
     public static function run(
-        string $keyword
+        string $keyword,
+        int $weight
     ): Keyword {
         // @todo barryvdh/laravel-ide-helperにより強制的に型付け
         /* @var Keyword */
         return Keyword::createOrFirst(
-            ["keyword" => $keyword],
-            ["keyword" => $keyword]
+            compact("keyword", "weight"),
+            compact("keyword", "weight")
         );
     }
 }

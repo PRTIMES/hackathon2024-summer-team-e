@@ -19,8 +19,6 @@ namespace App\Models{
  * @property string $keyword
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PressRelease> $pressReleases
- * @property-read int|null $press_releases_count
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword query()
@@ -39,23 +37,15 @@ namespace App\Models{
  * @property int $id
  * @property string $company_id
  * @property string $release_id
- * @property string $title
- * @property string $summary
- * @property string $release_created_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Keyword> $keywords
- * @property-read int|null $keywords_count
  * @method static \Illuminate\Database\Eloquent\Builder|PressRelease newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PressRelease newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PressRelease query()
  * @method static \Illuminate\Database\Eloquent\Builder|PressRelease whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PressRelease whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PressRelease whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PressRelease whereReleaseCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PressRelease whereReleaseId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PressRelease whereSummary($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PressRelease whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PressRelease whereUpdatedAt($value)
  */
 	class PressRelease extends \Eloquent {}
@@ -76,8 +66,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ViewHistory> $view_histories
- * @property-read int|null $view_histories_count
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -93,30 +81,5 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  */
 	class User extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * 
- *
- * @property int $id
- * @property int $score
- * @property int $user_id
- * @property int $keyword_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Keyword $keyword
- * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|ViewHistory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ViewHistory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ViewHistory query()
- * @method static \Illuminate\Database\Eloquent\Builder|ViewHistory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ViewHistory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ViewHistory whereKeywordId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ViewHistory whereScore($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ViewHistory whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ViewHistory whereUserId($value)
- */
-	class ViewHistory extends \Eloquent {}
 }
 

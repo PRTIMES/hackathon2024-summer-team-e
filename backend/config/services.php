@@ -35,12 +35,4 @@ return [
         ],
     ],
 
-    'prtimes' => [
-        'token' => env('PRTIMES_API_TOKEN')
-    ],
-
-    'openai' => [
-        'token' => env('OPENAI_API_TOKEN')
-    ]
-
 ];

@@ -23,7 +23,6 @@ class PressRelease extends Model
      */
     public function keywords(): BelongsToMany
     {
-        return $this->belongsToMany(Keyword::class)
-                    ->withPivot("weight");
+        return $this->belongsToMany(Keyword::class);
     }
 }
