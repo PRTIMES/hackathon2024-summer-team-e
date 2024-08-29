@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
 
             $table->string("keyword");
+            $table->integer("weight");
+
+            $table->unique(["keyword", "weight"]);
 
             $table->timestamps();
         });
