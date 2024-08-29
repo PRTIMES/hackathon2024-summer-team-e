@@ -2,7 +2,7 @@ import { Card, CardContent, Typography } from '@mui/material'
 
 type ArticleCardProps = {
   title: string
-  content: string
+  summary: string
   url: string
 }
 
