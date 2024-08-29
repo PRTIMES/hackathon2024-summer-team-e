@@ -16,7 +16,12 @@ export default function Top() {
         </p>
         <Link href="/signup">
           <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            スタート
+            新規登録
+          </button>
+        </Link>
+        <Link href="/signin">
+          <button className="mt-4 px-4 py-2 ml-4 bg-blue-500 text-white rounded hover:bg-blue-600">
+            ログイン
           </button>
         </Link>
       </div>
