@@ -1,5 +1,3 @@
-import React from 'react'
-import { useRouter } from 'next/router'
 import {
   Container,
   Box,
@@ -10,12 +8,11 @@ import {
   Paper,
 } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import React from 'react'
 
 const theme = createTheme()
 
 export default function LoginForm() {
-  const router = useRouter()
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -26,8 +23,6 @@ export default function LoginForm() {
       job: data.get('job'),
       address: data.get('address'),
     })
-    // Navigate to the customize/industry page
-    router.push('/customize/industry')
   }
 
   return (
