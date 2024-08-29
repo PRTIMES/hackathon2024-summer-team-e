@@ -71,7 +71,7 @@ class SignUpController extends Controller
                 "validation",
                 "Validation failed",
                 [
-                    "code" => ["有効期限切れです。"]
+                    "token" => ["有効期限切れです。"]
                 ]
             );
 
@@ -92,7 +92,7 @@ class SignUpController extends Controller
                 "validation",
                 "Validation failed",
                 [
-                    "code" => ["有効期限切れです。"]
+                    "token" => ["有効期限切れです。"]
                 ]
             );
 
@@ -102,7 +102,7 @@ class SignUpController extends Controller
                 "validation",
                 "Validation failed",
                 [
-                    "code" => ["ワンタイムパスワードが間違っています。。"]
+                    "token" => ["ワンタイムパスワードが間違っています。"]
                 ]
             );
 
