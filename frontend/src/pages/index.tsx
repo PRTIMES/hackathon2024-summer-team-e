@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+import React from 'react'
 import {
   Container,
   Box,
@@ -8,8 +10,6 @@ import {
   Paper,
 } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import React from 'react'
-import { useRouter } from 'next/router'
 
 const theme = createTheme()
 
