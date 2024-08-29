@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('press_releases', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger("release_id")->unsigned(); // PR TIMES
+            $table->bigInteger("company_id")->unsigned()->unique(); // PR TIMES
 
-            $table->foreignId("company_id")->references("company_id")->on("companies");
+            $table->string("name");
+            $table->integer("popularity")->default(0);
 
-            $table->string("title");
-            $table->string("summary");
-
-            $table->timestamp("release_created_at");
+            $table->integer("industry_id");
 
             $table->timestamps();
         });
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('press_releases');
+        Schema::dropIfExists('companies');
     }
 };

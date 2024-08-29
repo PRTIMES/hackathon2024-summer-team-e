@@ -20,6 +20,7 @@ class FindByIdsAction
     {
         return PressRelease::where("company_id", $company_id)
                            ->where("release_id", $release_id)
+                           ->with(["company"])
                            ->first();
     }
 }
