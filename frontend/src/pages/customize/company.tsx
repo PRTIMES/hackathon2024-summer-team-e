@@ -32,14 +32,17 @@ export default function CompanyList() {
       return
     }
 
-    const industry_ids = (
-      Array.isArray(raw_industry_id) ? raw_industry_id : [raw_industry_id]
-    ).map((v) => Number(v))
+    const industry_ids = Array.isArray(raw_industry_id)
+      ? raw_industry_id
+      : [raw_industry_id]
 
-    ky.post('./api/company/list', {
-      json: {
-        industry_ids,
-      },
+    const searchParams = new URLSearchParams()
+    industry_ids.forEach((industry_id) => {
+      searchParams.append('industry_ids[]', industry_id)
+    })
+
+    ky.get('./api/company/list', {
+      searchParams,
     })
       .then((v) => {
         return v.json<
