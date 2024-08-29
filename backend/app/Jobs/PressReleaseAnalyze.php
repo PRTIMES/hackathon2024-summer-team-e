@@ -4,13 +4,14 @@ namespace App\Jobs;
 
 use App\Libs\Bedrock;
 use App\Libs\OpenAI;
-use App\UseCases\Keyword\UpdateOrCreateAction;
+use App\Libs\PrTimesApi;
+use App\UseCases\Company\CreateOrFirstAction as CompanyCreateOrFirstAction;
+use App\UseCases\Keyword\CreateOrFirstAction as KeywordCreateOrFirstAction;
 use App\UseCases\PressRelease\CreateAction as PressReleaseCreateAction;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use GuzzleHttp\Client as GuzzleClient;
 
 class PressReleaseAnalyze implements ShouldQueue
 {
@@ -35,46 +36,22 @@ class PressReleaseAnalyze implements ShouldQueue
      */
     public function handle(): void
     {
-        $headers = [
-            "Authorization" => "Bearer " . config("services.prtimes.token")
-        ];
-
-        $guzzle = new GuzzleClient([
-            "base_uri" => "https://hackathon.stg-prtimes.net/"
-        ]);
-
         $openai = new OpenAI(config("services.openai.token"));
 
         $bedrock = new Bedrock();
 
-        $response = $guzzle->get("/api/companies/112/releases/1078", ["headers" => $headers]);
+        $prtimes = new PrTimesApi(config("services.prtimes.token"));
 
-        if ($response->getStatusCode() !== 200)
-            throw new Exception("PR TIMES API Error");
+        $release_data = $prtimes->release($this->company_id, $this->release_id);
+        $company_data = $prtimes->company($this->company_id);
 
-        /* @var array{
-         *     body: string,
-         *     company_id: int,
-         *     company_name: string,
-         *     created_at: string,
-         *     lead_paragraph: string,
-         *     like: int,
-         *     main_category_id: int,
-         *     main_category_name: string,
-         *     main_image: string,
-         *     main_image_fastly: string,
-         *     release_id: int,
-         *     release_type: string,
-         *     sub_category_id: string,
-         *     sub_category_name: string,
-         *     subtitle: string,
-         *     title: string,
-         *     url: string
-         *     } $data
-         */
-        $data = json_decode($response->getBody()->getContents(), true);
+        CompanyCreateOrFirstAction::run(
+            company_id: $this->company_id,
+            name: $company_data["company_name"],
+            industry_id: $company_data["industry_id"]
+        );
 
-        $body = strip_tags($data["body"]);
+        $body = strip_tags($release_data["body"]);
 
         $summary = $openai->answer(
             question: $body,
@@ -88,9 +65,9 @@ class PressReleaseAnalyze implements ShouldQueue
         $press_release = PressReleaseCreateAction::run(
             company_id: $this->company_id,
             release_id: $this->release_id,
-            title: $data["title"],
+            title: $release_data["title"],
             summary: $summary,
-            release_created_at: $data["created_at"]
+            release_created_at: $release_data["created_at"]
         );
 
         $keywords_string = $bedrock->answer(
@@ -106,7 +83,7 @@ class PressReleaseAnalyze implements ShouldQueue
 
         foreach ($keywords as $keyword) {
 
-            $keyword = UpdateOrCreateAction::run($keyword);
+            $keyword = KeywordCreateOrFirstAction::run($keyword);
 
             $press_release->keywords()
                           ->syncWithPivotValues(
@@ -119,5 +96,13 @@ class PressReleaseAnalyze implements ShouldQueue
         }
 
         // @todo さらに形態素解析をかまして、低い重みでキーワードを登録する。
+
+        // ChatGPTのレート制限回避用
+        sleep(20);
+    }
+
+    public function failed($exception = null)
+    {
+        dd($exception);
     }
 }
