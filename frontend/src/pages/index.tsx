@@ -1,39 +1,53 @@
-import React from 'react';
-import { 
-  Container, 
-  Box, 
-  Typography, 
-  TextField, 
-  Button, 
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
   CssBaseline,
-  Paper
-} from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+  Paper,
+} from '@mui/material'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import React from 'react'
 
-const theme = createTheme();
+const theme = createTheme()
 
 export default function LoginForm() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
     console.log({
       name: data.get('name'),
       email: data.get('email'),
       age: data.get('age'),
       job: data.get('job'),
       address: data.get('address'),
-    });
-  };
+    })
+  }
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Paper elevation={3} sx={{ marginTop: 8, padding: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Paper
+          elevation={3}
+          sx={{
+            marginTop: 8,
+            padding: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <Typography component="h1" variant="h5">
             ようこそ
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -90,5 +104,5 @@ export default function LoginForm() {
         </Paper>
       </Container>
     </ThemeProvider>
-  );
+  )
 }
