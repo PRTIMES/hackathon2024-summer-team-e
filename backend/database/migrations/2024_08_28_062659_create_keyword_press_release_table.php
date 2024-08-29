@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('keyword_press_release', function (Blueprint $table) {
             $table->id();
 
-            $table->integer("score")->default(0);
+            $table->integer("weight")->default(0);
 
             $table->foreignId("press_release_id")->constrained();
             $table->foreignId("keyword_id")->constrained();
