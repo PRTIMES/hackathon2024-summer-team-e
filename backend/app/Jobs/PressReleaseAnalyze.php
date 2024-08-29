@@ -36,7 +36,7 @@ class PressReleaseAnalyze implements ShouldQueue
      */
     public function handle(): void
     {
-        $openai = new OpenAI(config("services.openai.token"));
+        //$openai = new OpenAI(config("services.openai.token"));
 
         $bedrock = new Bedrock();
 
@@ -53,14 +53,17 @@ class PressReleaseAnalyze implements ShouldQueue
 
         $body = strip_tags($release_data["body"]);
 
-        $summary = $openai->answer(
-            question: $body,
-            background: "あなたは、プレスリリースの内容を元にして、若者に興味を持ってもらえる文章を生成するエージェントです。\n
-                         以下の条件を満たしてください。\n
-                         1. 生成した文章は100文字以内\n
-                         2. 絵文字は用いない\n
-                         3. 内容に基づく。感想を含めない。"
+        $summary_json = $bedrock->answer(
+            question: "プレスリリースの内容を元にして、若者に興味を持ってもらえる文章を生成しろ \n
+                       指示 \n
+                       生成した文章は100文字以内 \n
+                       絵文字は用いない \n
+                       内容に基づき感想を含めないことい \n
+                       以下のようなJSONの配列形式で出力すること \n
+                       [\"要約の内容\"] \n
+                       JSONデータ以外一切出力しないこと \n\n" . $body
         );
+        $summary = (json_decode($summary_json) ?? [""])[0];
 
         $press_release = PressReleaseCreateAction::run(
             company_id: $this->company_id,
@@ -96,9 +99,6 @@ class PressReleaseAnalyze implements ShouldQueue
         }
 
         // @todo さらに形態素解析をかまして、低い重みでキーワードを登録する。
-
-        // ChatGPTのレート制限回避用
-        sleep(20);
     }
 
     public function failed($exception = null)
