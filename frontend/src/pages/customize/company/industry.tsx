@@ -9,13 +9,11 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
-import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
 
 export default function CompanyList() {
-  const router = useRouter()
   const [companyData, setCompanyData] = useState([])
   const [selectedCompanies, setSelectedCompanies] = useState([])
   const [loading, setLoading] = useState(false)
@@ -115,24 +113,22 @@ export default function CompanyList() {
           }}
         >
           {companyData.map((company) => (
-            <Card key={company.company_id} sx={{ mb: 4, p: 2 }}>
+            <Card key={company.id} sx={{ mb: 4, p: 2 }}>
               <CardContent>
                 <ListItem disablePadding>
                   <ListItemButton
                     role={undefined}
-                    onClick={() => handleToggle(company.company_id)}
+                    onClick={() => handleToggle(company.id)}
                     dense
                   >
                     <Checkbox
                       edge="start"
-                      checked={
-                        selectedCompanies.indexOf(company.company_id) !== -1
-                      }
+                      checked={selectedCompanies.indexOf(company.id) !== -1}
                       tabIndex={-1}
                       disableRipple
                     />
                     <ListItemText
-                      primary={company.company_name}
+                      primary={company.title}
                       sx={{ textAlign: 'center' }}
                       primaryTypographyProps={{ variant: 'h6' }}
                     />
