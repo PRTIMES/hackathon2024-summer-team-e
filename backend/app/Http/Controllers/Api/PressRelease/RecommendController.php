@@ -43,6 +43,7 @@ class RecommendController extends Controller
                 return [
                     "title"   => $press_release->title,
                     "summary" => $press_release->summary,
+                    "company_name" => $press_release->company->name,
                     "url"     => route(
                         "press-release.redirect",
                         [
