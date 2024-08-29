@@ -24,15 +24,22 @@ const Index: NextPage = () => {
   ]
 
   return (
-    <Box sx={{ backgroundColor: 'white', minHeight: '100vh' }}>
-      <Container maxWidth="md" sx={{ pt: 6 }}>
-        <Typography
-          variant="h3"
-          component="h1"
-          sx={{ textAlign: 'center', my: 4, color: 'text.primary' }}
-        >
-          記事タイトルと要約
-        </Typography>
+    <Box sx={{ backgroundColor: 'white', minHeight: '100vh', p: 4 }}>
+      <Typography
+        variant="h3"
+        component="h1"
+        sx={{ textAlign: 'center', mb: 2, color: 'text.primary' }}
+      >
+        オススメ記事
+      </Typography>
+      <Typography
+        variant="body1"
+        component="p"
+        sx={{ textAlign: 'center', mb: 4, color: 'text.primary' }}
+      >
+        あなたが気になる記事を選ぼう
+      </Typography>
+      <Container maxWidth="md">
         {articles.map((article) => (
           <Box key={article.id} sx={{ mb: 4, bgcolor: 'white' }}>
             <ArticleCard {...article} />

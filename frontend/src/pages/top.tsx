@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-export default function Example() {
+export default function Top() {
   return (
     <div className="relative isolate overflow-hidden bg-gray-600 min-h-screen py-24 sm:py-32 flex flex-col justify-center items-center">
       <div className="px-4 sm:px-6 lg:px-8 text-center">
