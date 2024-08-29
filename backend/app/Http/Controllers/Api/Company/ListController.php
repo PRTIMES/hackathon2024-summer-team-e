@@ -30,7 +30,7 @@ class ListController extends Controller
             $companies->map(function ($company) {
                 /* @var Company $company */
                 return [
-                    "id" => $company->id,
+                    "id" => $company->company_id,
                     "name" => $company->name
                 ];
             })->toArray()
