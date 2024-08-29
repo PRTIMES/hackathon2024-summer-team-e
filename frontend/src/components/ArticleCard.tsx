@@ -18,17 +18,23 @@ const ArticleCard = (props: ArticleCardProps) => {
   }
 
   return (
-    <Card sx={{ backgroundColor: 'lightblue' }}>
+    <Card
+      sx={{
+        backgroundColor: 'lightblue',
+        mb: 4, // 会社リストと同様に下マージンを追加
+        p: 2, // パディングを追加して内側のスペースを確保
+        width: '100%', // 横幅をコンテナに合わせる
+        mx: 'auto', // 自動的に左右中央揃え
+      }}
+    >
       <CardContent>
         <Typography
+          variant="h6"
           component="div"
           onClick={handleClick}
           sx={{
             mb: 2,
-            minHeight: 48,
-            fontSize: 16,
             fontWeight: 'bold',
-            lineHeight: 1.5,
             cursor: 'pointer',
             color: 'inherit',
             '&:hover': {
@@ -38,7 +44,13 @@ const ArticleCard = (props: ArticleCardProps) => {
         >
           {omit(props.title)(45)('...')}
         </Typography>
-        <Typography sx={{ fontSize: 12 }}>{props.content}</Typography>
+        <Typography
+          sx={{
+            fontSize: 14,
+          }}
+        >
+          {props.content}
+        </Typography>
       </CardContent>
     </Card>
   )
