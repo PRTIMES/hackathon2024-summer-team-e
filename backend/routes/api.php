@@ -13,6 +13,7 @@ Route::post("/signin/verify", [Auth\SignInController::class, "verify"]);
 Route::middleware("auth:sanctum")->group(function () {
 
     Route::get("/press-release/recommend", PressRelease\RecommendController::class);
+    Route::get("/press-release/company",   PressRelease\CompanyController::class);
 
     Route::get("/company/list", Company\ListController::class);
 });
