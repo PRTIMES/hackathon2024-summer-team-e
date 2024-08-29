@@ -114,5 +114,10 @@ export default function Home() {
         </a>
       </div>
     </main>
+<<<<<<< HEAD
   )
 }
+=======
+  );
+}
+>>>>>>> fff415c (create signin&home)
