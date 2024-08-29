@@ -10,6 +10,10 @@ class PressRelease extends Model
     use HasFactory;
 
     protected $fillable = [
-        "keyword"
+        "company_id",
+        "release_id",
+        "title",
+        "summary",
+        "release_created_at"
     ];
 }

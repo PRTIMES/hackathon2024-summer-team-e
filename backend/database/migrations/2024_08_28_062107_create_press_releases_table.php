@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string("company_id");
             $table->string("release_id");
 
+            $table->string("title");
+            $table->string("summary");
+
+            $table->timestamp("release_created_at");
+
             $table->timestamps();
         });
     }
