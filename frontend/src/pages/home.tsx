@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, Typography, Button } from '@mui/material'
 import type { NextPage } from 'next'
 import { useState, useEffect } from 'react'
 import ArticleCard from '@/components/ArticleCard'
@@ -16,6 +16,7 @@ const Index: NextPage = () => {
   const [articles, setArticles] = useState<ArticleProps[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<boolean>(false)
+  const [itemsToShow, setItemsToShow] = useState<number>(30)
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/photos')
@@ -35,6 +36,10 @@ const Index: NextPage = () => {
         setLoading(false)
       })
   }, [])
+
+  const handleLoadMore = () => {
+    setItemsToShow(itemsToShow + 30)
+  }
 
   if (loading) return <Loading />
   if (error) return <Error />
@@ -56,11 +61,18 @@ const Index: NextPage = () => {
         あなたが気になる記事を選ぼう
       </Typography>
       <Container maxWidth="md">
-        {articles.map((article) => (
+        {articles.slice(0, itemsToShow).map((article) => (
           <Box key={article.id} sx={{ mb: 4, bgcolor: 'white' }}>
             <ArticleCard {...article} />
           </Box>
         ))}
+        {itemsToShow < articles.length && (
+          <Box sx={{ textAlign: 'center', mt: 4 }}>
+            <Button variant="contained" onClick={handleLoadMore}>
+              もっと見る
+            </Button>
+          </Box>
+        )}
       </Container>
     </Box>
   )
