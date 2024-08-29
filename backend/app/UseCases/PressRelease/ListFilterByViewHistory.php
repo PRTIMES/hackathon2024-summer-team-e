@@ -20,15 +20,17 @@ class ListFilterByViewHistory
         int $take = 20
     ): Collection
     {
-        return PressRelease::with("keywords.view_histories")->whereHas("keywords.view_histories", function ($query) use ($user_id, $mode) {
-            $query->where("user_id", $user_id)
-                  ->when($mode === "love", function ($query) {
-                      $query->where("score", ">", 10);
-                  })
-                  ->when($mode === "like", function ($query) {
-                      $query->where("score", ">", 2)
-                            ->where("score", "<", 8);
-                  });
+        return PressRelease::when($mode !== "neutral", function ($query) use ($user_id, $mode) {
+            $query->whereHas("keywords.view_histories", function ($query) use ($user_id, $mode) {
+                $query->where("user_id", $user_id)
+                      ->when($mode === "love", function ($query) {
+                          $query->where("score", ">", 10);
+                      })
+                      ->when($mode === "like", function ($query) {
+                          $query->where("score", ">", 2)
+                                ->where("score", "<", 8);
+                      });
+            });
         })->inRandomOrder()->take($take)->get();
     }
 }
