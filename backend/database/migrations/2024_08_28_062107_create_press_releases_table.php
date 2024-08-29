@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('press_releases', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("release_id")->unsigned(); // PR TIMES
 
-            $table->string("company_id");
-            $table->string("release_id");
+            $table->foreignId("company_id")->references("company_id")->on("companies");
 
             $table->string("title");
             $table->string("summary");
