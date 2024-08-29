@@ -6,9 +6,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "aws/aws-sdk-php": "^3.321",
+        "aws/aws-sdk-php-laravel": "^3.9",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "ext-http": "*"
+        "openai-php/client": "^0.10.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.1",
