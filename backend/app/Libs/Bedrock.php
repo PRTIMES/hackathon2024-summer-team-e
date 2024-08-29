@@ -11,7 +11,7 @@ class Bedrock
 
     public function __construct(
         private readonly string $model_id = "anthropic.claude-3-haiku-20240307-v1:0",
-        private readonly string $anthropic_version = "anthropic.claude-3-haiku-20240307-v1:0",
+        private readonly string $anthropic_version = "bedrock-2023-05-31",
         private readonly int $max_token = 1000,
         array $client_configs = [
             "region" => "us-east-1",

@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('keyword_press_release', function (Blueprint $table) {
+        Schema::create('view_histories', function (Blueprint $table) {
             $table->id();
 
-            $table->integer("weight")->default(0);
+            $table->integer("score")->default(0);
 
-            $table->foreignId("press_release_id")->constrained();
+            $table->foreignId("user_id")->constrained();
             $table->foreignId("keyword_id")->constrained();
 
-            $table->unique(["keyword_id", "press_release_id"]);
+            $table->unique(["user_id", "keyword_id"]);
 
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('keyword_press_release');
+        Schema::dropIfExists('view_histories');
     }
 };
