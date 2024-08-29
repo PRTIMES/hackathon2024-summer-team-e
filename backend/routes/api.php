@@ -15,5 +15,5 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::post("/press-release/view", PressRelease\ViewController::class);
     Route::get("/press-release/recommend", PressRelease\RecommendController::class);
 
-    Route::post("/company/list", Company\ListController::class);
+    Route::get("/company/list", Company\ListController::class);
 });
