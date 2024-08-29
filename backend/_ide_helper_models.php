@@ -16,6 +16,33 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $company_id
+ * @property string $name
+ * @property int $popularity
+ * @property int $industry_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PressRelease> $press_releases
+ * @property-read int|null $press_releases_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Company newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Company newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Company query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Company whereCompanyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Company whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Company whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Company whereIndustryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Company whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Company wherePopularity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Company whereUpdatedAt($value)
+ */
+	class Company extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $keyword
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -37,13 +64,14 @@ namespace App\Models{
  * 
  *
  * @property int $id
- * @property string $company_id
- * @property string $release_id
+ * @property int $release_id
+ * @property int $company_id
  * @property string $title
  * @property string $summary
  * @property string $release_created_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Company $company
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Keyword> $keywords
  * @property-read int|null $keywords_count
  * @method static \Illuminate\Database\Eloquent\Builder|PressRelease newModelQuery()
