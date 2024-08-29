@@ -13,9 +13,26 @@ import { useState, useEffect } from 'react'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
 
+type Company = 
+  {
+    "company_id": number;
+    "company_name": string;
+    "president_name": string;
+    "address": string;
+    "phone": string;
+    "description": string;
+    "industry": string;
+    "ipo_type": string;
+    "capital": number;
+    "foundation_date": string;
+    "url": string;
+    "twitter_screen_name": string;
+  }
+
+
 export default function CompanyList() {
-  const [companyData, setCompanyData] = useState([])
-  const [selectedCompanies, setSelectedCompanies] = useState([])
+  const [companyData, setCompanyData] = useState<Company[]>([])
+  const [selectedCompanies, setSelectedCompanies] = useState<number[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [itemsToShow, setItemsToShow] = useState(15) // 表示するアイテム数の初期値を15に設定
@@ -25,10 +42,16 @@ export default function CompanyList() {
       setLoading(true)
       try {
         const response = await fetch(
-          'https://jsonplaceholder.typicode.com/photos',
+          'https://hackathon.stg-prtimes.net/api/companies',
+          {
+            headers: {
+              
+              Authorization: `Bearer 37aaaf2e5398eec3521ca0408f9e0817999d81e014c000a3e65b55e6a807060c`
+            }
+          }
         )
         if (!response.ok) {
-          throw new Error('Failed to fetch')
+          return;
         }
         const data = await response.json()
         setCompanyData(data)
@@ -51,7 +74,7 @@ export default function CompanyList() {
     return <Error />
   }
 
-  const handleToggle = (value) => {
+  const handleToggle = (value: any) => {
     const currentIndex = selectedCompanies.indexOf(value)
     const newChecked = [...selectedCompanies]
 
@@ -81,7 +104,7 @@ export default function CompanyList() {
       })
 
       if (!response.ok) {
-        throw new Error('Something went wrong')
+        return;
       }
 
       const data = await response.json()
@@ -114,22 +137,22 @@ export default function CompanyList() {
           sx={{ width: '100%', bgcolor: 'background.paper', overflow: 'auto' }}
         >
           {companyData.slice(0, itemsToShow).map((company) => (
-            <Card key={company.id} sx={{ mb: 4, p: 2 }}>
+            <Card key={company.company_id} sx={{ mb: 4, p: 2 }}>
               <CardContent>
                 <ListItem disablePadding>
                   <ListItemButton
                     role={undefined}
-                    onClick={() => handleToggle(company.id)}
+                    onClick={() => handleToggle(company.company_id)}
                     dense
                   >
                     <Checkbox
                       edge="start"
-                      checked={selectedCompanies.indexOf(company.id) !== -1}
+                      checked={selectedCompanies.indexOf(company.company_id) !== -1}
                       tabIndex={-1}
                       disableRipple
                     />
                     <ListItemText
-                      primary={company.title}
+                      primary={company.company_name}
                       sx={{ textAlign: 'center' }}
                       primaryTypographyProps={{ variant: 'h6' }}
                     />
