@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api\PressRelease;
 use App\Exceptions\HttpJsonResponseException;
 use App\Http\Controllers\Controller;
 use App\Models\Keyword;
-use App\Models\User;
-use App\UseCases\User\FindByIdAction as UserFindByIdAction;
+use App\UseCases\ViewHistory\UpdateOrCreateAction as ViewHistoryUpdateOrCreateAction;
 use App\UseCases\PressRelease\FindByIdsAction;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,15 +16,14 @@ class ViewController extends Controller
 {
     /**
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      * @throws Exception
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
-        /* @var User $user */
-        $user = UserFindByIdAction::run(Auth::id());
-        if ($user === null) // @todo まともにExceptionする
-            throw new Exception("test");
+        $user_id = Auth::id();
+        if ($user_id === null || is_string($user_id)) // auth:sanctumで弾いているため最低限の例外
+            throw new Exception("想定外エラー");
 
         $company_id = $request->get("company_id");
         $release_id = $request->get("release_id");
@@ -42,18 +41,9 @@ class ViewController extends Controller
         /* @var Keyword $keyword */
         foreach ($press_release->keywords() as $keyword) {
 
-
-            $user->view_histories()->create([
-
-            ]);
-
-
-
-
+            ViewHistoryUpdateOrCreateAction::run($user_id, $keyword->id);
         }
-        $press_release->keywords();
 
-
-        $press_release->keywords();
+        return response()->json(["result" => "ok"]);
     }
 }
