@@ -27,7 +27,7 @@ export default function LoginForm() {
       address: data.get('address'),
     })
     // ホームページに遷移
-    router.push('/customize/industory')
+    router.push('/customize/industry')
   }
 
   return (
