@@ -9,6 +9,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { ky } from '@/libs/ky'
@@ -22,6 +23,7 @@ export default function CompanyList() {
   const [companyData, setCompanyData] = useState<Company[]>([])
   const [selectedCompanies, setSelectedCompanies] = useState<number[]>([])
   const [itemsToShow, setItemsToShow] = useState(15) // 表示するアイテム数の初期値を15に設定
+  const [resultUrl, setResultUrl] = useState<string>('')
 
   const router = useRouter()
 
@@ -59,6 +61,15 @@ export default function CompanyList() {
       })
   }, [router, router.query])
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams()
+    selectedCompanies.forEach((selectedCompany) => {
+      searchParams.append('company_ids', String(selectedCompany))
+    })
+
+    setResultUrl('/customize/result?' + searchParams.toString())
+  }, [selectedCompanies])
+
   const handleToggle = (value: number) => {
     const currentIndex = selectedCompanies.indexOf(value)
     const newChecked = [...selectedCompanies]
@@ -74,31 +85,6 @@ export default function CompanyList() {
 
   const handleLoadMore = () => {
     setItemsToShow(itemsToShow + 15) // さらに15件を表示
-  }
-
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/test', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          selectedCompanies,
-        }),
-      })
-
-      if (!response.ok) {
-        return
-      }
-
-      const data = await response.json()
-      console.log(data)
-      alert('Submission successful')
-    } catch (error) {
-      console.error('Failed to submit companies:', error)
-      alert('Failed to submit')
-    }
   }
 
   return (
@@ -159,8 +145,13 @@ export default function CompanyList() {
           </Box>
         )}
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-            提出
+          <Button
+            component={Link}
+            href={resultUrl}
+            variant="contained"
+            color="primary"
+          >
+            プレスリリースを見る
           </Button>
         </Box>
       </Container>
