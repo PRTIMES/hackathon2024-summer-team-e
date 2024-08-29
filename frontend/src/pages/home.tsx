@@ -22,7 +22,7 @@ const Index: NextPage = () => {
     fetch('https://jsonplaceholder.typicode.com/photos')
       .then((response) => {
         if (!response.ok) {
-          return;
+          return
         }
         return response.json()
       })

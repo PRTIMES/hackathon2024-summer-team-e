@@ -9,70 +9,50 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
+import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import Error from '@/components/Error'
-import Loading from '@/components/Loading'
+import { ky } from '@/libs/ky'
 
-type Company = 
-  {
-    "company_id": number;
-    "company_name": string;
-    "president_name": string;
-    "address": string;
-    "phone": string;
-    "description": string;
-    "industry": string;
-    "ipo_type": string;
-    "capital": number;
-    "foundation_date": string;
-    "url": string;
-    "twitter_screen_name": string;
-  }
-
+type Company = {
+  id: number
+  name: string
+}
 
 export default function CompanyList() {
   const [companyData, setCompanyData] = useState<Company[]>([])
   const [selectedCompanies, setSelectedCompanies] = useState<number[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
   const [itemsToShow, setItemsToShow] = useState(15) // 表示するアイテム数の初期値を15に設定
 
+  const router = useRouter()
+
   useEffect(() => {
-    const fetchCompanyData = async () => {
-      setLoading(true)
-      try {
-        const response = await fetch(
-          'https://hackathon.stg-prtimes.net/api/companies',
-          {
-            headers: {
-              
-              Authorization: `Bearer 37aaaf2e5398eec3521ca0408f9e0817999d81e014c000a3e65b55e6a807060c`
-            }
-          }
-        )
-        if (!response.ok) {
-          return;
-        }
-        const data = await response.json()
-        setCompanyData(data)
-        setLoading(false)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        setError(true)
-        setLoading(false)
-      }
+    const raw_industry_id = router.query['industry-id']
+    if (!raw_industry_id) {
+      router.push('/customize/industry').then()
+      return
     }
 
-    fetchCompanyData()
-  }, [])
+    const industry_ids = (
+      Array.isArray(raw_industry_id) ? raw_industry_id : [raw_industry_id]
+    ).map((v) => Number(v))
 
-  if (loading) {
-    return <Loading />
-  }
-
-  if (error) {
-    return <Error />
-  }
+    ky.post('./api/company/list', {
+      json: {
+        industry_ids,
+      },
+    })
+      .then((v) => {
+        return v.json<
+          {
+            id: number
+            name: string
+          }[]
+        >()
+      })
+      .then((value) => {
+        setCompanyData(value)
+      })
+  }, [router, router.query])
 
   const handleToggle = (value: any) => {
     const currentIndex = selectedCompanies.indexOf(value)
@@ -104,7 +84,7 @@ export default function CompanyList() {
       })
 
       if (!response.ok) {
-        return;
+        return
       }
 
       const data = await response.json()
@@ -137,22 +117,22 @@ export default function CompanyList() {
           sx={{ width: '100%', bgcolor: 'background.paper', overflow: 'auto' }}
         >
           {companyData.slice(0, itemsToShow).map((company) => (
-            <Card key={company.company_id} sx={{ mb: 4, p: 2 }}>
+            <Card key={company.id} sx={{ mb: 4, p: 2 }}>
               <CardContent>
                 <ListItem disablePadding>
                   <ListItemButton
                     role={undefined}
-                    onClick={() => handleToggle(company.company_id)}
+                    onClick={() => handleToggle(company.id)}
                     dense
                   >
                     <Checkbox
                       edge="start"
-                      checked={selectedCompanies.indexOf(company.company_id) !== -1}
+                      checked={selectedCompanies.indexOf(company.id) !== -1}
                       tabIndex={-1}
                       disableRipple
                     />
                     <ListItemText
-                      primary={company.company_name}
+                      primary={company.name}
                       sx={{ textAlign: 'center' }}
                       primaryTypographyProps={{ variant: 'h6' }}
                     />

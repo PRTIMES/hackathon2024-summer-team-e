@@ -10,6 +10,7 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { ky } from '@/libs/ky'
 
 const theme = createTheme()
 
@@ -19,15 +20,29 @@ export default function LoginForm() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    console.log({
-      name: data.get('name'),
-      email: data.get('email'),
-      age: data.get('age'),
-      job: data.get('job'),
-      address: data.get('address'),
+
+    ky.post('./api/signup/verify', {
+      json: {
+        token: data.get('otp'),
+      },
     })
-    // ホームページに遷移
-    router.push('/customize/industry')
+      .then(() => {
+        router.push('/customize/industry').then()
+      })
+      .catch(async (reason) => {
+        const error = (await reason.response.json()) as {
+          status: string
+          type: string
+          message: string
+          data: { [key: string]: string[] }
+        }
+        const message = Object.keys(error.data)
+          .map((key) => {
+            return error.data[key].join(' ')
+          })
+          .join('\n')
+        alert(error.message + '\n\n' + message)
+      })
   }
 
   return (
@@ -45,7 +60,7 @@ export default function LoginForm() {
           }}
         >
           <Typography component="h1" variant="h5">
-            ようこそ
+            メールアドレスに届いたワンタイムパスワードを入力してください
           </Typography>
           <Box
             component="form"
@@ -57,45 +72,10 @@ export default function LoginForm() {
               margin="normal"
               required
               fullWidth
-              id="name"
-              label="名前"
-              name="name"
-              autoComplete="name"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="メールアドレス"
-              name="email"
-              autoComplete="email"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="age"
-              label="年齢"
-              name="age"
+              id="otp"
+              label="ワンタイムパスワード（数字六桁）"
+              name="otp"
               type="number"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="job"
-              label="仕事"
-              name="job"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="address"
-              label="住所(都道府県)"
-              name="address"
             />
             <Button
               type="submit"
@@ -103,7 +83,7 @@ export default function LoginForm() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              登録
+              認証
             </Button>
           </Box>
         </Paper>
