@@ -26,6 +26,8 @@ export default function CompanyList() {
   const router = useRouter()
 
   useEffect(() => {
+    if (!router.isReady) return;
+
     const raw_industry_id = router.query['industry-id']
     if (!raw_industry_id) {
       router.push('/customize/industry').then()
