@@ -20,16 +20,18 @@ import {
 } from 'react-icons/md'
 import { useRouter } from 'next/router'
 
-const IndustryButton = ({
-  Icon,
-  label,
-  isSelected,
-  onClick,
-}: {
+interface IndustryButtonProps {
   Icon: IconType
   label: string
   isSelected: boolean
   onClick: () => void
+}
+
+const IndustryButton: React.FC<IndustryButtonProps> = ({
+  Icon,
+  label,
+  isSelected,
+  onClick,
 }) => {
   return (
     <button
@@ -46,7 +48,7 @@ const IndustryButton = ({
   )
 }
 
-type Industry = {
+interface Industry {
   Icon: IconType
   label: string
   id: number
@@ -77,7 +79,7 @@ export default function HomePage() {
 
   const toggleIndustry = (id: number) => {
     setSelectedIndustries((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     )
   }
 
