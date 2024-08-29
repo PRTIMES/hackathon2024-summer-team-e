@@ -20,7 +20,7 @@ class ListFilterByViewHistory
         int $take = 20
     ): Collection
     {
-        return PressRelease::when($mode !== "neutral", function ($query) use ($user_id, $mode) {
+        return PressRelease::with("company")->when($mode !== "neutral", function ($query) use ($user_id, $mode) {
             $query->whereHas("keywords.view_histories", function ($query) use ($user_id, $mode) {
                 $query->where("user_id", $user_id)
                       ->when($mode === "love", function ($query) {
