@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 type ArticleCardProps = {
   title: string
   content: string
+  url: string
 }
 
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
@@ -14,17 +15,17 @@ const ArticleCard = (props: ArticleCardProps) => {
 
   // タイトルクリックでルーティング
   const handleClick = () => {
-    router.push('/')
+    router.push(props.url)
   }
 
   return (
     <Card
       sx={{
         backgroundColor: 'lightblue',
-        mb: 4, // 会社リストと同様に下マージンを追加
-        p: 2, // パディングを追加して内側のスペースを確保
-        width: '100%', // 横幅をコンテナに合わせる
-        mx: 'auto', // 自動的に左右中央揃え
+        mb: 4,
+        p: 2,
+        width: '100%',
+        mx: 'auto',
       }}
     >
       <CardContent>

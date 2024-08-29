@@ -1,27 +1,43 @@
 import { Box, Container, Typography } from '@mui/material'
 import type { NextPage } from 'next'
+import { useState, useEffect } from 'react'
 import ArticleCard from '@/components/ArticleCard'
+import Error from '@/components/Error'
+import Loading from '@/components/Loading'
 
 type ArticleProps = {
   id: number
   title: string
   content: string
+  url: string
 }
 
 const Index: NextPage = () => {
-  const articles: ArticleProps[] = [
-    {
-      id: 1,
-      title: '1番目の記事',
-      content: '記事の要約1',
-    },
-    {
-      id: 2,
-      title: '2番目の記事',
-      content: '記事の要約2',
-    },
-    // 他の記事データを追加...
-  ]
+  const [articles, setArticles] = useState<ArticleProps[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<boolean>(false)
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/photos')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        setArticles(data)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error)
+        setError(true)
+        setLoading(false)
+      })
+  }, [])
+
+  if (loading) return <Loading />
+  if (error) return <Error />
 
   return (
     <Box sx={{ backgroundColor: 'white', minHeight: '100vh', p: 4 }}>
