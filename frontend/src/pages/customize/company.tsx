@@ -54,7 +54,7 @@ export default function CompanyList() {
       })
   }, [router, router.query])
 
-  const handleToggle = (value: any) => {
+  const handleToggle = (value: number) => {
     const currentIndex = selectedCompanies.indexOf(value)
     const newChecked = [...selectedCompanies]
 
