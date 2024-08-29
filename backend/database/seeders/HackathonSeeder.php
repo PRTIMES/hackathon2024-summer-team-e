@@ -29,9 +29,9 @@ class HackathonSeeder extends Seeder
             "base_uri" => "https://hackathon.stg-prtimes.net/"
         ]);
 
-        for ($i = 0; $i < 1; $i++) {
+        for ($i = 0; $i < 20; $i++) {
 
-            $response = $guzzle_client->get("/api/releases?per_page=1&page=$i&from_date=2000-01-01", ["headers" => $headers]);
+            $response = $guzzle_client->get("/api/releases?per_page=100&page=$i&from_date=2000-01-01", ["headers" => $headers]);
 
             if ($response->getStatusCode() !== 200)
                 throw new Exception("PR TIMES API Error");
