@@ -18,6 +18,7 @@ export default function CompanyList() {
   const [selectedCompanies, setSelectedCompanies] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [itemsToShow, setItemsToShow] = useState(15) // 表示するアイテム数の初期値を15に設定
 
   useEffect(() => {
     const fetchCompanyData = async () => {
@@ -63,6 +64,10 @@ export default function CompanyList() {
     setSelectedCompanies(newChecked)
   }
 
+  const handleLoadMore = () => {
+    setItemsToShow(itemsToShow + 15) // さらに15件を表示
+  }
+
   const handleSubmit = async () => {
     try {
       const response = await fetch('http://localhost:8000/test', {
@@ -106,13 +111,9 @@ export default function CompanyList() {
       </Typography>
       <Container maxWidth="md">
         <List
-          sx={{
-            width: '100%',
-            bgcolor: 'background.paper',
-            overflow: 'auto',
-          }}
+          sx={{ width: '100%', bgcolor: 'background.paper', overflow: 'auto' }}
         >
-          {companyData.map((company) => (
+          {companyData.slice(0, itemsToShow).map((company) => (
             <Card key={company.id} sx={{ mb: 4, p: 2 }}>
               <CardContent>
                 <ListItem disablePadding>
@@ -138,6 +139,17 @@ export default function CompanyList() {
             </Card>
           ))}
         </List>
+        {itemsToShow < companyData.length && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleLoadMore}
+            >
+              もっと見る
+            </Button>
+          </Box>
+        )}
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
           <Button variant="contained" color="primary" onClick={handleSubmit}>
             提出
