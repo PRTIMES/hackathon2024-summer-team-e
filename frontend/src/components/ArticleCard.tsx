@@ -3,6 +3,7 @@ import { Card, CardContent, Typography } from '@mui/material'
 type ArticleCardProps = {
   title: string
   summary: string
+  company_name: string
   url: string
 }
 
@@ -43,6 +44,13 @@ const ArticleCard = (props: ArticleCardProps) => {
             }}
           >
             {props.summary}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: 12,
+            }}
+          >
+            {props.company_name}
           </Typography>
         </CardContent>
       </a>
