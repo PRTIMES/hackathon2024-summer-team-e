@@ -41,9 +41,15 @@ class RecommendController extends Controller
                 /* @var PressRelease $press_release */
 
                 return [
-                    "id"      => $press_release->id,
                     "title"   => $press_release->title,
-                    "summary" => $press_release->summary
+                    "summary" => $press_release->summary,
+                    "url"     => route(
+                        "press-release.redirect",
+                        [
+                            "company_id" => $press_release->company_id,
+                            "release_id" => $press_release->release_id
+                        ]
+                    )
                 ];
             })
                       ->toArray()
