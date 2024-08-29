@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { IconType } from 'react-icons'
 import {
@@ -18,7 +19,6 @@ import {
   MdRealEstateAgent,
   MdAccountBalance,
 } from 'react-icons/md'
-import { useRouter } from 'next/router'
 
 interface IndustryButtonProps {
   Icon: IconType
@@ -79,7 +79,7 @@ export default function HomePage() {
 
   const toggleIndustry = (id: number) => {
     setSelectedIndustries((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     )
   }
 
