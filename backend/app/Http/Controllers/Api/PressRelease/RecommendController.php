@@ -25,13 +25,13 @@ class RecommendController extends Controller
         if ($user_id === null || is_string($user_id)) // auth:sanctumで弾いているため最低限の例外
             throw new Exception("想定外エラー");
 
-        $love    = PressReleaseListFilterByViewHistory::run($user_id, self::PRESS_RELEASE_COUNT * 0.7, "love");
-        $like    = PressReleaseListFilterByViewHistory::run($user_id, self::PRESS_RELEASE_COUNT * 0.2, "like");
+        $love = PressReleaseListFilterByViewHistory::run($user_id, "love", self::PRESS_RELEASE_COUNT * 0.7);
+        $like = PressReleaseListFilterByViewHistory::run($user_id, "like", self::PRESS_RELEASE_COUNT * 0.2);
 
         $neutral = PressReleaseListFilterByViewHistory::run(
             $user_id,
-            self::PRESS_RELEASE_COUNT - $love->count() - $like->count(),
-            "neutral"
+            "neutral",
+            self::PRESS_RELEASE_COUNT - $love->count() - $like->count()
         );
 
         $recommend = $neutral->merge($love)->merge($like)->shuffle();
