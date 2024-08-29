@@ -140,7 +140,7 @@ export default function CompanyList() {
               color="primary"
               onClick={handleLoadMore}
             >
-              もっと見る
+              他の会社もみる
             </Button>
           </Box>
         )}
