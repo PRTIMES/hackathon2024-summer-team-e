@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Company;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Company\InvokeRequest;
+use App\Http\Requests\Api\Company\List\InvokeRequest;
 use App\Models\Company;
 use App\UseCases\Company\ListFilterByIndustryIds;
 use Illuminate\Http\JsonResponse;
