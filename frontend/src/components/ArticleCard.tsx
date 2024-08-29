@@ -1,9 +1,9 @@
 import { Card, CardContent, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
 
 type ArticleCardProps = {
   title: string
-  content: string
+  summary: string
+  company_name: string
   url: string
 }
 
@@ -11,13 +11,6 @@ const omit = (text: string) => (len: number) => (ellipsis: string) =>
   text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text
 
 const ArticleCard = (props: ArticleCardProps) => {
-  const router = useRouter()
-
-  // タイトルクリックでルーティング
-  const handleClick = () => {
-    router.push(props.url)
-  }
-
   return (
     <Card
       sx={{
@@ -28,31 +21,39 @@ const ArticleCard = (props: ArticleCardProps) => {
         mx: 'auto',
       }}
     >
-      <CardContent>
-        <Typography
-          variant="h6"
-          component="div"
-          onClick={handleClick}
-          sx={{
-            mb: 2,
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            color: 'inherit',
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          {omit(props.title)(45)('...')}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: 14,
-          }}
-        >
-          {props.content}
-        </Typography>
-      </CardContent>
+      <a href={props.url} target="_blank" rel="noopener noreferrer">
+        <CardContent>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              mb: 2,
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              color: 'inherit',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            {omit(props.title)(45)('...')}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: 14,
+            }}
+          >
+            {props.summary}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: 12,
+            }}
+          >
+            {props.company_name}
+          </Typography>
+        </CardContent>
+      </a>
     </Card>
   )
 }

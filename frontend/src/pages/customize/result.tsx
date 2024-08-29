@@ -1,7 +1,7 @@
-import { Box, Container, Typography } from '@mui/material'
-import Button from '@mui/material/Button'
+import { Box, Container, Typography, Button } from '@mui/material'
 import type { NextPage } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import ArticleCard from '@/components/ArticleCard'
 import Loading from '@/components/Loading'
@@ -17,10 +17,34 @@ type ArticleProps = {
 const Index: NextPage = () => {
   const [articles, setArticles] = useState<ArticleProps[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [readMoreDisabled, setReadMoreDisabled] = useState<boolean>(false)
+
+  const router = useRouter()
 
   useEffect(() => {
-    ky.get('./api/press-release/recommend')
+    setLoading(true)
+  }, [])
+
+  useEffect(() => {
+    if (!router.isReady) return
+
+    const raw_company_id = router.query['company_ids']
+    if (!raw_company_id) {
+      router.push('/customize/industry').then()
+      return
+    }
+
+    const company_ids = Array.isArray(raw_company_id)
+      ? raw_company_id
+      : [raw_company_id]
+
+    const searchParams = new URLSearchParams()
+    company_ids.forEach((company_id) => {
+      searchParams.append('company_ids[]', company_id)
+    })
+
+    ky.get('./api/press-release/company', {
+      searchParams,
+    })
       .then((v) => {
         return v.json<
           {
@@ -35,7 +59,7 @@ const Index: NextPage = () => {
         setLoading(false)
         setArticles(value)
       })
-  }, [])
+  }, [router, router.query])
 
   if (loading) return <Loading />
 
@@ -46,14 +70,14 @@ const Index: NextPage = () => {
         component="h1"
         sx={{ textAlign: 'center', mb: 2, color: 'text.primary' }}
       >
-        カスタマイズされたプレスリリースを見る
+        選択した企業のピックアッププレスリリース
       </Typography>
       <Typography
         variant="body1"
         component="p"
         sx={{ textAlign: 'center', mb: 4, color: 'text.primary' }}
       >
-        あなたが気になる記事を見よう
+        あなたが気になる記事を選ぼう
       </Typography>
       <Container maxWidth="md">
         {articles.map((article, id) => (
@@ -61,31 +85,21 @@ const Index: NextPage = () => {
             <ArticleCard {...article} />
           </Box>
         ))}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Button
+            component={Link}
+            href="/customize/industry"
             variant="contained"
-            color="primary"
-            disabled={readMoreDisabled}
-            onClick={() => {
-              setReadMoreDisabled(true)
-              ky.get('./api/press-release/recommend')
-                .then((v) => {
-                  return v.json<
-                    {
-                      title: string
-                      summary: string
-                      company_name: string
-                      url: string
-                    }[]
-                  >()
-                })
-                .then((v) => {
-                  setArticles((prevState) => [...prevState, ...v])
-                  setReadMoreDisabled(false)
-                })
-            }}
           >
-            もっと見る
+            業種・会社から探し直す
+          </Button>
+          <Button
+            component={Link}
+            href="/home"
+            variant="contained"
+            sx={{ ml: 2 }}
+          >
+            カスタマイズされたプレスリリースを見る
           </Button>
         </Box>
       </Container>
