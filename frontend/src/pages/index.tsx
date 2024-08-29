@@ -9,10 +9,13 @@ import {
 } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import React from 'react'
+import { useRouter } from 'next/router'
 
 const theme = createTheme()
 
 export default function LoginForm() {
+  const router = useRouter()
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -23,6 +26,8 @@ export default function LoginForm() {
       job: data.get('job'),
       address: data.get('address'),
     })
+    // ホームページに遷移
+    router.push('/home')
   }
 
   return (
