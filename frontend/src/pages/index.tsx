@@ -6,7 +6,7 @@ export default function Top() {
     <div className="relative isolate overflow-hidden bg-gray-600 min-h-screen py-24 sm:py-32 flex flex-col justify-center items-center">
       <div className="px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-          サーチポート
+          サチポ
         </h2>
         <p className="mt-6 text-lg leading-8 text-gray-300">
           あなたに合った記事を見つけられる
