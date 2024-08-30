@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>サーチポート|あなたに合った記事を見つけられる</title>
+        <title>サチポ|あなたに合った記事を見つけられる</title>
         <link rel="icon" href="/favicons/search.png" />
       </Head>
       <body>

@@ -35,7 +35,7 @@ const Header = () => {
           <IconButton onClick={() => router.back()} sx={{ color: 'white' }}>
             <ArrowBackIcon />
           </IconButton>
-          <h1 style={{ flexGrow: 1, textAlign: 'center' }}>サーチポート</h1>
+          <h1 style={{ flexGrow: 1, textAlign: 'center' }}>サチポ</h1>
           <IconButton onClick={goForward} sx={{ color: 'white' }}>
             <ArrowForwardIcon />
           </IconButton>
