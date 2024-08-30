@@ -11,7 +11,8 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "openai-php/client": "^0.10.1"
+        "openai-php/client": "^0.10.1",
+        "predis/predis": "^2.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.1",
