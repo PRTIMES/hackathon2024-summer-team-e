@@ -1,7 +1,6 @@
 import { Box, Container, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
 import type { NextPage } from 'next'
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import ArticleCard from '@/components/ArticleCard'
 import Loading from '@/components/Loading'
